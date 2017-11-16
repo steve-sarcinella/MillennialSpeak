@@ -1,8 +1,9 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-const thiccener = require('./thiccener');
+const thiccener = require('./src/thiccener');
 
-var TOKEN = process.env.SLACK_API_TOKEN || 'test';
+const TOKEN = process.env.SLACK_API_TOKEN || 'test';
+const PORT = process.env.PORT || 5000;
 
 const app = new express();
 app.use(bodyParser.urlencoded({extended:true}));
@@ -20,6 +21,6 @@ app.get('/thicc', (request, response) => {
   console.log(thiccener.thicc(request.body.text, 1));
 });
 
-app.listen(5000, () => {
-  console.log(`Server started at localhost:${5000}`);
+app.listen(PORT, () => {
+  console.log(`Server started at localhost:${PORT}`);
 })
