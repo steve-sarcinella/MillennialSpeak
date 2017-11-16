@@ -1,0 +1,26 @@
+{
+  "name": "millennialspeak",
+  "version": "1.0.0",
+  "description": "Thicc, Clapp",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steve-sarcinella/MillennialSpeak.git"
+  },
+  "keywords": [
+    "thicc",
+    "clapp"
+  ],
+  "author": "steve sarcinella",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/steve-sarcinella/MillennialSpeak/issues"
+  },
+  "homepage": "https://github.com/steve-sarcinella/MillennialSpeak#readme",
+  "dependencies": {
+    "@slack/client": "^3.14.2"
+  }
+}
