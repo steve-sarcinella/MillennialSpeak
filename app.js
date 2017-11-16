@@ -1,5 +1,6 @@
-const express = require('express')
-const bodyParser = require('body-parser')
+const express = require('express');
+const bodyParser = require('body-parser');
+const axios = require('axios');
 const thiccener = require('./src/thiccener');
 
 const TOKEN = process.env.SLACK_API_TOKEN || 'test';
@@ -17,8 +18,9 @@ app.get('/', (req, res) => {
   console.log(`incoming request: ${req.body}`);
 })
 
-app.get('/thicc', (request, response) => {
-  console.log(thiccener.thicc(request.body.text, 1));
+app.post('/thicc', (request, response) => {
+  console.log(request);
+  response.send('Cannot thiccen at this time');
 });
 
 app.listen(PORT, () => {
