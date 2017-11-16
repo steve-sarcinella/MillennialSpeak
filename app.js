@@ -19,8 +19,7 @@ app.get('/', (req, res) => {
 })
 
 app.post('/thicc', (request, response) => {
-  console.log(request);
-  response.send('Cannot thiccen at this time');
+  response.send(thiccener.thiccen(request.body.text));
 });
 
 app.listen(PORT, () => {
