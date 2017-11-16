@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const axios = require('axios');
+const WebClient = require('@slack/client').WebClient;
 const thiccener = require('./src/thiccener');
 
 const TOKEN = process.env.SLACK_API_TOKEN || 'test';
@@ -14,11 +15,22 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-// app.get('/', (req, res) => {
-//   console.log(`incoming request: ${req.body}`);
-// })
-
 app.post('/thicc', (req, res) => {
+  let web = new WebClient(req.body.token);
+  web.chat.postMessage({
+    channel: req.body.channel,
+    token: req.body.token,
+    text: thiccener.thiccen(req.body.text),
+    as_user: true
+  }, (err, res) => {
+      if (err) {
+          console.log('Error:', err);
+      } else {
+          console.log('Message sent: ', res);
+      }
+  });
+
+
   let thiccened = thiccener.thiccen(req.body.text);
   res.send({
     response_type: 'in_channel',
