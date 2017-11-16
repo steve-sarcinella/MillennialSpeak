@@ -14,12 +14,13 @@ if (!TOKEN) {
   process.exit(1);
 }
 
-app.get('/', (req, res) => {
-  console.log(`incoming request: ${req.body}`);
-})
+// app.get('/', (req, res) => {
+//   console.log(`incoming request: ${req.body}`);
+// })
 
-app.post('/thicc', (request, response) => {
-  response.send(thiccener.thiccen(request.body.text));
+app.post('/thicc', (req, res) => {
+  // console.log(req.body);
+  res.send(thiccener.thiccen(req.body.text));
 });
 
 app.listen(PORT, () => {
