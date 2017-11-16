@@ -16,7 +16,6 @@ const doThiccen = (text, thiccener) => {
 }
 
 const thiccen = (command) => {
-  // console.log(command);
   if (!command) return '_p r o b l e m s_';
 
   matches = thiccMatcher.exec(command);

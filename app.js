@@ -19,8 +19,11 @@ if (!TOKEN) {
 // })
 
 app.post('/thicc', (req, res) => {
-  // console.log(req.body);
-  res.send(thiccener.thiccen(req.body.text));
+  let thiccened = thiccener.thiccen(req.body.text);
+  res.send({
+    response_type: 'in_channel',
+    text: thiccened
+  });
 });
 
 app.listen(PORT, () => {
