@@ -3,51 +3,53 @@ require('dotenv').config();
 const app = require('express')();
 const bodyParser = require('body-parser');
 const request = require('request');
-const slackEvents = require('slack-events-listener')(process.env.SLACK_VERIFICATION_TOKEN, onSlackEvent);
 
-const BOT_ACCESS_TOKEN = process.env.SLACK_API_TOKEN || 'test';
-const PORT = process.env.PORT || 5000;
+//parse application/x-www-form-urlencoded && application/json
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-//Local Tunnel for testing
-if (process.env.LOCAL_DEV) {
-  const lt = require('localtunnel');
-  const tunnel = lt(PORT, (err, tunnel) => {
-    if (err) {
-      console.log('Local tunnel wanted for dev, but failed: ' + err);
-      process.exit();
+const eventProcessingQueue = [];
+
+//Define event route
+app.post('/slack_events', (req, res) => {
+  switch (req.body.type) {
+    case 'url_verification': {
+      res.send({ challenge: req.body.challenge });
+      break;
+    }
+    case 'event_callback': {
+      if (req.body.token !== process.env.SLACK_VERIFICATION_TOKEN) {
+        res.sendStatus(500);
+        break;
+      }
+
+      eventProcessingQueue.push(req.body.event);
+
+      res.sendStatus(200);
     }
 
-    console.log(`Local Tunnel is up and running at url: ${tunnel.url}`);
-  });
-
-  tunnel.on('close', () => {
-    console.log('Local Tunnel is closing url: ${localtunnel.url}');
-  });
-}
+    default: { res.sendStatus(500); }
+  }
+});
 
 
-// if (!TOKEN) {
-//     console.error('mising environment variable SLACK_API_TOKEN');
-//     process.exit(1);
-// }
-
-function onSlackEvent(event, cb) {
-  // do something. call cb with err if you want Slack to resend the message (your database might be down)
-  // writeToDatabase(event, cb);
-  console.log(event);
-  console.log(cb);
-}
-
-// /slack_events should match whatever webhook you set in Slack
-app.use('/slack_events', bodyParser.json(), slackEvents);
-app.use(bodyParser.urlencoded({extended:true}));
+//Define routes
+app.get('/', (req, res) => {
+  res.send('<h2>MillennialSpeak</h2> <p>Looks like you\'ve landed on our service site.
+  This app pairs best with slack</p>');
+});
 
 app.get('/thiccify', (req, res) => res.send('NOT IMPLEMENTED'));
 
-app.listen(PORT, () => console.log('Speak listening on port ' + PORT));
+app.listen(process.env.PORT, () => console.log(`Speak listening on port ${process.env.PORT}`));
 
-// request.get('https://slack.com/api/rtm.connect', {}, (err, res, body) => {
-//   // console.log(err);
-//   // console.log(res);
-//   console.log(body);
-// });
+
+function processEvents() {
+  while(eventProcessingQueue.length) {
+    let event = eventProcessingQueue.shift();
+    console.log(`Event of type ${event.type} received`);
+  }
+}
+
+//begin event loop
+setTimeout(processEvents, 1000);
