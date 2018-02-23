@@ -35,8 +35,7 @@ app.post('/slack_events', (req, res) => {
 
 //Define routes
 app.get('/', (req, res) => {
-  res.send('<h2>MillennialSpeak</h2> <p>Looks like you\'ve landed on our service site.
-  This app pairs best with slack</p>');
+  res.send('<h2>MillennialSpeak</h2><p>This app pairs best with slack</p>');
 });
 
 app.get('/thiccify', (req, res) => res.send('NOT IMPLEMENTED'));
