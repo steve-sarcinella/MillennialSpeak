@@ -9,6 +9,8 @@ const _ = require('lodash');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const { PORT, SLACK_API_TOKEN, SLACK_VERIFICATION_TOKEN } = process.env;
+
 const messagesProcessQueue = [];
 function queueMessage(requestBody) {
   messagesProcessQueue.push(requestBody);
@@ -67,23 +69,36 @@ app.get('/', (req, res) => {
 });
 
 app.post('/thiccify', (req, res) => {
-  console.log(req.body);
+  console.log('Thiccify called: ' + JSON.stringify(req.body));
 
-  const message = {
-    token: process.env.SLACK_TOKEN,
-    as_user: true,
-    channel: req.body.channel_id,
-    response_type: 'in_channel',
-    link_names: true,
-    text: 'Echo' + req.body.text + ' from ' + req.body.command
+  //Possible other fields
+  // response_type: 'in_channel',
+  //   link_names: true,
+
+  const postConfig = {
+    headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${SLACK_API_TOKEN}`,
+    }
   };
 
-  const sendMessage = axios.post('https://slack.com/api/chat.postMessage', JSON.stringify(message));
+  let chatPostMessageData = JSON.stringify({
+    token: SLACK_API_TOKEN,
+    as_user: true,
+    channel: req.body.channel_id,
+    text: 'Echo' + req.body.text + ' from ' + req.body.command
+  });
+
+  console.log('Chat post message: ' + chatPostMessageData);
+
+  axios.post('https://slack.com/api/chat.postMessage', chatPostMessageData, postConfig)
+  .then(res => {
+    console.log('Response Received: ' + JSON.stringify(res.body));
+  }).catch(err => {
+    console.log('Error performing HTTP Post:' + err);
+  });
 
   res.sendStatus(200);
 });
 
 app.listen(process.env.PORT, () => console.log(`Speak listening on port ${process.env.PORT}`));
-
-//wait 5 sec, then run every 2 sec
-// setTimeout(() => setInterval(runEventLoop, 2000), 5000);
