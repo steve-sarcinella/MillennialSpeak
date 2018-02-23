@@ -12,6 +12,7 @@ const eventProcessingQueue = [];
 
 //Define event route
 app.post('/slack_events', (req, res) => {
+  console.log(req);
   switch (req.body.type) {
     case 'url_verification': {
       res.send({ challenge: req.body.challenge });
@@ -23,15 +24,13 @@ app.post('/slack_events', (req, res) => {
         break;
       }
 
-      eventProcessingQueue.push(req.body.event);
-
+      // eventProcessingQueue.push(req.body.event);
       res.sendStatus(200);
     }
 
     default: { res.sendStatus(500); }
   }
 });
-
 
 //Define routes
 app.get('/', (req, res) => {
