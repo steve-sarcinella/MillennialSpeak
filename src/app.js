@@ -16,12 +16,7 @@ function queueMessage(requestBody) {
 
 function handleMessage(messageBody) {
   if (_.startsWith(messageBody.event.body, '/thiccify')) {
-    const message = {
-      token: process.env.SLACK_TOKEN,
-      as_user: true,
-      link_names: true,
-      text: 'THIS IS EXAMPLE TEXT, REPLACE WITH THICCEN'
-    };
+
 
     message.channel = messageBody.event.channel;
     const sendMessage = axios.post('https://slack.com/api/chat.postMessage', JSON.stringify(message));
@@ -71,9 +66,24 @@ app.get('/', (req, res) => {
   res.send('<h2>MillennialSpeak</h2><p>This app pairs best with slack</p>');
 });
 
-app.get('/thiccify', (req, res) => res.send('NOT IMPLEMENTED'));
+app.post('/thiccify', (req, res) => {
+  console.log(req.body);
+
+  const message = {
+    token: process.env.SLACK_TOKEN,
+    as_user: true,
+    channel: req.body.channel_id,
+    response_type: 'in_channel',
+    link_names: true,
+    text: 'Echo' + req.body.text + ' from ' + req.body.command
+  };
+
+  const sendMessage = axios.post('https://slack.com/api/chat.postMessage', JSON.stringify(message));
+
+  res.sendStatus(200);
+});
 
 app.listen(process.env.PORT, () => console.log(`Speak listening on port ${process.env.PORT}`));
 
 //wait 5 sec, then run every 2 sec
-setTimeout(() => setInterval(runEventLoop, 2000), 5000);
+// setTimeout(() => setInterval(runEventLoop, 2000), 5000);
