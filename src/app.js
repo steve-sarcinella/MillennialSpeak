@@ -70,6 +70,7 @@ app.get('/', (req, res) => {
 
 app.post('/thiccify', (req, res) => {
   console.log('Thiccify called: ' + JSON.stringify(req.body));
+  res.status(200).end();
 
   //Possible other fields
   // response_type: 'in_channel',
@@ -77,8 +78,8 @@ app.post('/thiccify', (req, res) => {
 
   const postConfig = {
     headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SLACK_API_TOKEN}`,
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${SLACK_API_TOKEN}`,
     }
   };
 
@@ -97,8 +98,6 @@ app.post('/thiccify', (req, res) => {
   }).catch(err => {
     console.log('Error performing HTTP Post:' + err);
   });
-
-  res.sendStatus(200);
 });
 
 app.listen(process.env.PORT, () => console.log(`Speak listening on port ${process.env.PORT}`));
