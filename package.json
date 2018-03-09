@@ -7,7 +7,7 @@
     "start": "node src/app.js --exec babel-node",
     "build": "babel src -d dist",
     "serve": "node dist/app.js",
-    "test": "mocha --require babel-core/register"
+    "test": "mocha -w --recursive --require babel-core/register"
   },
   "repository": {
     "type": "git",
