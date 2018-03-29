@@ -5,7 +5,8 @@ const bodyParser = require('body-parser');
 const axios = require('axios');
 const _ = require('lodash');
 
-const cmdProcessorMap = _.chain(require('./command_processors')).keyBy('cmd').mapValues('run').value();
+const commandProcessors = require('./command_processors');
+const cmdProcessorMap = _.chain(commandProcessors).keyBy('cmd').mapValues('run').value();
 console.log(cmdProcessorMap);
 
 //parse application/x-www-form-urlencoded && application/json
