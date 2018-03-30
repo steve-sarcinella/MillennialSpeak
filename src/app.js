@@ -8,7 +8,6 @@ const _ = require('lodash');
 const commandProcessors = require('./command_processors');
 const cmdProcessorMap = _.chain(commandProcessors).keyBy('cmd').mapValues('run').value();
 console.log(cmdProcessorMap);
-console.log(cmdProcessorMap['/clappify']('Hello everyone'));
 
 //parse application/x-www-form-urlencoded && application/json
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -29,7 +28,7 @@ const POST_CONFIG = {
 };
 
 app.post('/millennialspeak', (req, res) => {
-  console.log(`${req.command} called: ' + JSON.stringify(req.body)`);
+  console.log(`${req.command} called: ${JSON.stringify(req.body)}`);
   res.status(200).end();
 
   let cmdProcessor = cmdProcessorMap[req.command];
