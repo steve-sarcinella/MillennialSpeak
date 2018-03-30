@@ -35,7 +35,7 @@ app.post('/millennialspeak', (req, res) => {
   let cmdProcessor = cmdProcessorMap[req.command];
 
   if (!cmdProcessor) {
-    console.log(`Command [${}] is not valid!`);
+    console.log(`Command [${req.command}] is not valid!`);
     res.status(400).end();
     return;
   }
