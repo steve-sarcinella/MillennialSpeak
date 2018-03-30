@@ -28,13 +28,13 @@ const POST_CONFIG = {
 };
 
 app.post('/millennialspeak', (req, res) => {
-  console.log(`${req.command} called: ${JSON.stringify(req.body)}`);
+  console.log(`${req.body.command} called: ${JSON.stringify(req.body)}`);
   res.status(200).end();
 
-  let cmdProcessor = cmdProcessorMap[req.command];
+  let cmdProcessor = cmdProcessorMap[req.body.command];
 
   if (!cmdProcessor) {
-    console.log(`Command [${req.command}] is not valid!`);
+    console.log(`Command [${req.body.command}] is not valid!`);
     res.status(400).end();
     return;
   }
@@ -43,7 +43,7 @@ app.post('/millennialspeak', (req, res) => {
     token: SLACK_API_TOKEN,
     as_user: true,
     channel: req.body.channel_id,
-    text: cmdProcessor(req.text)
+    text: cmdProcessor(req.body.text)
   });
 
   console.log('Chat post message: ' + message);
