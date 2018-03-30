@@ -48,7 +48,7 @@ app.post('/millennialspeak', (req, res) => {
 
   console.log('Chat post message: ' + message);
 
-  axios.post('https://slack.com/api/chat.postMessage', chatPostMessageData, postConfig)
+  axios.post('https://slack.com/api/chat.postMessage', message, POST_CONFIG)
   .then(res => {
     console.log('Response Received: ' + JSON.stringify(res.body));
   }).catch(err => {
