@@ -1,7 +1,7 @@
 const _ = require('lodash');
 
 const INPUT_PATTERN = /((\d+?)\W?)?((\:.+?\:)\W?(\:.+?\:))/;
-const ERROR_MESSAGE = 'error';
+const ERROR_MESSAGE = 'I\'m not cool enough for this';
 const SPACE = ' ';
 
 const run = (rawText) => {
