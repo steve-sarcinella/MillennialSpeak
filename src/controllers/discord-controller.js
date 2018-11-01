@@ -1,8 +1,6 @@
 require('dotenv').config();
 const _ = require('lodash');
-// const logger = require('winston');
 
-//discord
 const { PORT, DISCORD_BOT_TOKEN } = process.env;
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -18,10 +16,10 @@ client.on('message', message => {
   let command = _.find(commandProcessors, commandProcessor => _.startsWith(message.content, commandProcessor.cmd));
   if (!command) return;
 
-  //discord does not strip the command from the content
-  let toReplace = command.cmd + ' ';
-  let result = command.run(_.replace(message.content, toReplace, ''));
-  message.channel.send(result);
+  //discord does not strip the command from the content (notice the explicit space)
+  let result = command.run(message.content.replace(`${command.cmd} `, ''));
+  message.channel.send(result).then(msg => console.log(`Response (${result}) posted in channel ${message.channel.name}`)).catch(console.error);
+  message.delete().then(msg => console.log(`Deleted message ${message.content} from ${message.author.username} after successful processing`)).catch(console.error);
 });
 
 //log into discord
