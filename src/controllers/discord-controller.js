@@ -20,7 +20,6 @@ client.on('message', message => {
 
   //discord does not strip the command from the content
   let toReplace = command.cmd + ' ';
-  console.log(message);
   let result = command.run(_.replace(message.content, toReplace, ''));
   message.channel.send(result);
 });
