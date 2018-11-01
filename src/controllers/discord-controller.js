@@ -17,6 +17,7 @@ client.on('message', message => {
   if (!command) return;
 
   //discord does not strip the command from the content (notice the explicit space)
+  console.log(`Processing content with command ${command.cmd}: ${message.content}`);
   let result = command.run(message.content.replace(`${command.cmd} `, ''));
   message.channel.send(result).then(msg => console.log(`Response (${result}) posted in channel ${message.channel.name}`)).catch(console.error);
   message.delete().then(msg => console.log(`Deleted message ${message.content} from ${message.author.username} after successful processing`)).catch(console.error);
